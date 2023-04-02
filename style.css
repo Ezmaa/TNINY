@@ -20,9 +20,9 @@
     width: 100vw;
     height: 100vh;
     background-color: #ffffff;
-    background-image: url("assets/Fotor_AI.png");
+    /* background-image: url("assets/Fotor_AI.png");
     background-size: cover;
-    background-position: center;
+    background-position: center; */
   }
   
   .bttn-grid {
@@ -32,15 +32,40 @@
     margin-top: 20px;
   }
   
-  .bttn {
+  .button {
     background-color: hsl(200, 100%, 50%);
     border: 1px solid hsl(200, 100%, 30%);
     border-radius: 5px;
     padding: 5px 10px;
     color: white;
     outline: none;
+    display: none;
   }
   
-  .bttn:hover {
+  .button:hover {
     border-color: black;
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: 20px;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #ccc;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  #form-div {
+    margin: 20px;
+  }
+  label {
+    margin-right: 10px;
+  }
+  input {
+    margin-right: 10px;
   }
