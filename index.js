@@ -7,10 +7,15 @@ const leaderBoard = document.getElementById('leaderBoard');
 
 let state = {};
 let secondsLeft = 180;
-let totalScore = 0;
+let totalScore = localStorage.getItem('totalScore');
 let scores = JSON.parse(localStorage.getItem('scores')) || [];
 
 let gameStart = false;
+
+
+if (!totalScore) {
+    totalScore = 0;
+  }
 
 function playGame() {
     
@@ -29,10 +34,9 @@ startButton.addEventListener("click", playGame);
 
 function startTime() {
   const timerInterval = setInterval(function () {
-    let index = 0;
     secondsLeft--;
     timer.textContent = "Time Left: " + secondsLeft;
-    if (secondsLeft <= 0 || index >= questionsArr.length) {
+    if (secondsLeft <= 0) {
       clearInterval(timerInterval);
       endGame();
     }
@@ -67,6 +71,7 @@ function selectOption(option) {
     return playGame();
   }
   state = Object.assign(state, option.setState);
+  totalScore += option.score;
   showTextNode(nextTextNodeId);
 }
 
@@ -266,23 +271,35 @@ const renderTable = () => {
 };
 
 // Add score to list and persist in local storage
-const addScore = (name, score) => {
-  const newScore = { name, score };
-  scores.push(newScore);
-  scores.sort((a, b) => a.score - b.score);
-  localStorage.setItem('scores', JSON.stringify(scores));
-  renderTable();
-};
+// const addScore = (name, score) => {
+//   const newScore = { name, score };
+//   scores.push(newScore);
+//   scores.sort((a, b) => a.score - b.score);
+//   localStorage.setItem('scores', JSON.stringify(scores));
+//   renderTable();
+// };
 
 // Handle submit button click
-const submitButton = document.getElementById('submit-button');
-submitButton.addEventListener('click', () => {
-  const nameInput = document.getElementById('name-input');
-  const scoreInput = document.getElementById('score-input');
-  addScore(nameInput.value, parseInt(scoreInput.value));
-  nameInput.value = '';
-  scoreInput.value = '';
-});
+// const submitButton = document.getElementById('submit-button');
+// submitButton.addEventListener('click', () => {
+//   const nameInput = document.getElementById('name-input');
+//   const scoreInput = document.getElementById('score-input');
+//   addScore(nameInput.value, parseInt(scoreInput.value));
+//   nameInput.value = '';
+//   scoreInput.value = '';
+// });
+
+function submitScore() {
+    const scoreValue = document.getElementById("score").value;
+    const totalScore = localStorage.getItem("totalScore") || 0; // get total score from local storage, default to 0 if not present
+    const updatedScore = parseInt(totalScore) + parseInt(scoreValue); // add the current score value to the total score
+    localStorage.setItem("totalScore", updatedScore); // save the updated total score back to local storage
+    const leaderboardData = JSON.parse(localStorage.getItem("leaderboardData")) || []; // get the existing leaderboard data or create an empty array if not present
+    const username = document.getElementById("username").value;
+    const score = parseInt(scoreValue);
+    leaderboardData.push({ username, score }); // add the new score to the leaderboard data
+    localStorage.setItem("leaderboardData", JSON.stringify(leaderboardData)); // save the updated leaderboard data to local storage
+  }
 
 // Render table on page load
 renderTable();
